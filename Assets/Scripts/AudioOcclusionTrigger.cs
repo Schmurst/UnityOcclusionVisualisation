@@ -11,8 +11,8 @@ public class AudioOcclusionTrigger : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if ( other.tag != "Player" ) return;
-        if ( other.networkView == null ) return;
-        if ( !other.networkView.isMine ) return;
+        if ( other.GetComponent<NetworkView>() == null ) return;
+        if ( !other.GetComponent<NetworkView>().isMine ) return;
 		//gathers all occlusion objects whose occlusionType matches this trigger's occlusionType and attenuates them by volumeOccludEPct and lpfCutoff
 		AudioOcclusionObject[] occlusionObjects = (AudioOcclusionObject[])GameObject.FindObjectsOfType(typeof(AudioOcclusionObject));
 		//Debug.Log("I'm in! " + occlusionObjects.Length);		
@@ -26,8 +26,8 @@ public class AudioOcclusionTrigger : MonoBehaviour {
 	
 	void OnTriggerExit(Collider other) {
 		if ( other.tag != "Player" ) return;
-        if ( other.networkView == null ) return;
-        if ( !other.networkView.isMine ) return;
+        if ( other.GetComponent<NetworkView>() == null ) return;
+        if ( !other.GetComponent<NetworkView>().isMine ) return;
 		
 		//restore occluded objects
 		AudioOcclusionObject[] occlusionObjects = (AudioOcclusionObject[])GameObject.FindObjectsOfType(typeof(AudioOcclusionObject));

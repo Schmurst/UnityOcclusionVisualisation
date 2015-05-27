@@ -11,7 +11,6 @@ public enum occlusionCategory {
 	Custom2
 }
 
-
 [AddComponentMenu ("Audio/Occlusion Object")]
 
 public class AudioOcclusionObject : MonoBehaviour {
@@ -39,7 +38,7 @@ public class AudioOcclusionObject : MonoBehaviour {
 	private AudioLowPassFilter lpf;
 	
 	public void Init() {
-		originalVol = audio.volume;	
+		originalVol = GetComponent<AudioSource>().volume;	
 		lpf = gameObject.GetComponent<AudioLowPassFilter>();
 		if(lpf == null)
 			lpf = gameObject.AddComponent<AudioLowPassFilter>();
@@ -55,13 +54,13 @@ public class AudioOcclusionObject : MonoBehaviour {
 			
 			float timePct = 1.0f - timer / timeToFullOcclusion;		
 
-			audio.volume = Mathf.Lerp( startingVol, originalVol * volumePct, timePct );
+			GetComponent<AudioSource>().volume = Mathf.Lerp( startingVol, originalVol * volumePct, timePct );
 				
 			if(lpf.enabled)
 				lpf.cutoffFrequency = Mathf.Lerp(originalFilter, lpfCutoff, timePct);
 				//	lpf.cutoffFrequency = (originalFilter * timePct) - originalFilter;
-			if(audio.volume <= originalVol*volumePct) 
-				audio.volume = originalVol*volumePct;
+			if(GetComponent<AudioSource>().volume <= originalVol*volumePct) 
+				GetComponent<AudioSource>().volume = originalVol*volumePct;
 			if(lpf.enabled && lpf.cutoffFrequency <= lpfCutoff)
 				lpf.cutoffFrequency = lpfCutoff;
 
@@ -80,23 +79,23 @@ public class AudioOcclusionObject : MonoBehaviour {
 		
 		//bring the values back to normal
 		if(occlusionState == OcclusionState.ExitOcclusion) {
-			timer -= PersistentData.instance.GetDeltaVisualTime();
+			timer -= Time.deltaTime;
 			
 			float timePct = 1.0f - timer / timeToFullOcclusion;
 
-			audio.volume = Mathf.Lerp( startingVol, originalVol, timePct );
+			GetComponent<AudioSource>().volume = Mathf.Lerp( startingVol, originalVol, timePct );
 			
 			if(lpf.enabled)
 				lpf.cutoffFrequency = Mathf.Lerp(lpfCutoff, originalFilter, timePct);
-			if(audio.volume >= originalVol)
-				audio.volume = originalVol;
+			if(GetComponent<AudioSource>().volume >= originalVol)
+				GetComponent<AudioSource>().volume = originalVol;
 			if(lpf.cutoffFrequency >= originalFilter)
 				lpf.cutoffFrequency = originalFilter;
 
 			if( timer <= 0.0f )
 			{
 				lpf.enabled = false;
-				audio.volume = originalVol;
+				GetComponent<AudioSource>().volume = originalVol;
 
 				occlusionState = OcclusionState.Idle;
 			}
@@ -109,7 +108,7 @@ public class AudioOcclusionObject : MonoBehaviour {
 		//only occlude if the object is not already occluded
 		if(numTimesOccluded == 0) {
 			lpf.enabled = true;
-			startingVol = audio.volume;
+			startingVol = GetComponent<AudioSource>().volume;
 
 			lpfCutoff = cutoff;
 			volumePct = volPct;
@@ -128,7 +127,7 @@ public class AudioOcclusionObject : MonoBehaviour {
 		numTimesOccluded--;
 		if(numTimesOccluded == 0) {
 			lpf.enabled = true;
-			startingVol = audio.volume;
+			startingVol = GetComponent<AudioSource>().volume;
 
 			float delta = originalVol - originalVol * volumePct;		
 			float curVolumePct = (originalVol - startingVol) / delta;

@@ -20,11 +20,17 @@ public class RecursiveRaycaster : MonoBehaviour {
 		Ray ray = new Ray(this.transform.position, dir);
 		RaycastHit hit;
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity) == true){
-			Debug.DrawRay(this.transform.position, hit.point - this.transform.position, Color.red, 1.0f);
+			Debug.DrawRay(this.transform.position, hit.point - this.transform.position, Color.red, 6.0f);
 			Debug.Log ("hit");
 			if(hit.collider.CompareTag("Solid")){
 				Debug.Log("hit solid object");
 				hit.collider.gameObject.GetComponent<SoundOcclusionElement>().isHit();
+				Vector3 new_dir = dir - 2.0f * Vector3.Dot(dir, hit.normal) * hit.normal;
+				ray = new Ray(hit.point, new_dir);
+				Vector3 point = hit.point;
+				Physics.Raycast(ray, out hit, Mathf.Infinity);
+				Debug.DrawRay(point, hit.point - point, Color.blue, 6.0f);
+				Debug.Log ("hit");
 			}
 			else if (hit.collider.CompareTag("Empty")){
 				Debug.Log("hit empty object");

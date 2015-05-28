@@ -24,10 +24,11 @@ public class RecursiveRaycaster : MonoBehaviour {
 			Debug.Log ("hit");
 			if(hit.collider.CompareTag("Solid")){
 				Debug.Log("hit solid object");
-				hit.collider.gameObject.GetComponent<SoundOcclusionElement>().isHit();
+				//hit.collider.gameObject.GetComponent<SoundOcclusionElement>().isHit();
 				Vector3 new_dir = dir - 2.0f * Vector3.Dot(dir, hit.normal) * hit.normal;
 				ray = new Ray(hit.point, new_dir);
 				Vector3 point = hit.point;
+				Debug.DrawRay(point, new_dir, Color.green, 6.0f);
 				Physics.Raycast(ray, out hit, Mathf.Infinity);
 				Debug.DrawRay(point, hit.point - point, Color.blue, 6.0f);
 				Debug.Log ("hit");

@@ -6,7 +6,6 @@ public class SoundOcclusionElement : MonoBehaviour {
 	// this script will handle what happens when it is hit by a sound ray
 	public bool hit = false;
 	public int num_recursions = -1;
-	public Color hit_colour;
 
 	// Use this for initialization
 	void Start () {
@@ -14,11 +13,11 @@ public class SoundOcclusionElement : MonoBehaviour {
 	}
 
 	// on ray cast hit 
-	public void isHit(){
+	public void isHit(Color colour){
 		hit = true;
 		this.gameObject.layer = 2;
 		Material mat = new Material(Shader.Find("Diffuse"));
-		mat.color = hit_colour;
+		mat.color = colour;
 		this.GetComponent<Renderer>().material = mat;
 	}
 }

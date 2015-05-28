@@ -18,9 +18,22 @@ public class TileController : MonoBehaviour {
 		Generatelevel();
 	}
 
+	// called on user command, regenerates the level.
+	public void RegenerateLevel(){
+		FindObjectOfType<RecursiveRaycaster>().init();
+		SoundOcclusionElement[] children = this.GetComponentsInChildren<SoundOcclusionElement>();
+		foreach (SoundOcclusionElement child in children) {
+			Destroy(child.gameObject);
+		}
+		Generatelevel();
+	}
+
+
 	// generate random level
 	private void Generatelevel(){
 		GameObject tile;
+
+		Tiles.Clear();
 		// layout the tilse
 		for (int j = - grid_size; j < grid_size; j++) {
 			for (int i = -grid_size; i < grid_size; i++) {

@@ -14,6 +14,12 @@ public class TileController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Tiles = new List<GameObject>();
+
+		Generatelevel();
+	}
+
+	// generate random level
+	private void Generatelevel(){
 		GameObject tile;
 		// layout the tilse
 		for (int j = - grid_size; j < grid_size; j++) {
@@ -29,5 +35,7 @@ public class TileController : MonoBehaviour {
 				Tiles.Add(tile);
 			}
 		}
+
 	}
+
 }

@@ -28,7 +28,8 @@ public class RecursiveRaycaster : MonoBehaviour {
 		// angle displacement between succesive rays
 		float angle = 360.0f / (float) num_rays;
 		Vector3 dir = new Vector3(0.0f, 0.0f, 1.0f);
-		
+		current_recursion = 0;
+
 		rays = new List<Tuple<Vector3, Vector3>>();
 		for (int i = 0; i < num_rays; i++) {
 			Tuple<Vector3, Vector3> temp_ray = new Tuple<Vector3, Vector3>(dir, this.transform.position);

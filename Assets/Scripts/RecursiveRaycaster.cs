@@ -17,16 +17,17 @@ public class RecursiveRaycaster : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// angle displacement between succesive rays
-		float angle = 2.0f * Mathf.PI / 8;
+		float angle = 360.0f / num_rays;
 		Vector3 dir = new Vector3(0.0f, 0.0f, 1.0f);
-		Quaternion rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, angle));
+		Quaternion rotation = Quaternion.Euler(0.0f, angle, 0.0f);
 
 		rays = new List<Tuple<Vector3, Vector3>>();
 		for (int i = 0; i < num_rays; i++) {
 			Tuple<Vector3, Vector3> temp_ray = new Tuple<Vector3, Vector3>(dir, this.transform.position);
 			rays.Add(temp_ray);
 			// rotate the dir for the next ray
-			dir = rotation * dir;
+			dir = Quaternion.Euler(0.0f, 45.0f, 0.0f) * dir;
+			Debug.Log (dir);
 		}
 	}
 
@@ -44,21 +45,20 @@ public class RecursiveRaycaster : MonoBehaviour {
 		// Fire the ray, and detect what it hits
 		while (recurse == true){
 			recurse = Physics.Raycast(ray, out hit, Mathf.Infinity);
-			// draw the ray
-			Debug.DrawRay(pos, hit.point - pos, Color.red, 6.0f);
+			Debug.Log(recurse);
 			// if the ray is solid reflect the ray and increment the reflection
 			if (!recurse){
-				break;
+				Debug.DrawRay(pos, dir, Color.red, 6.0f);
 			}
 			else if(hit.collider.CompareTag("Solid")){
 				Debug.Log("hit solid object");
+				Debug.DrawRay(pos, hit.point - pos, Color.blue, 6.0f);
 				Vector3 point = hit.point;
 				// calc the reflected ray direction and increment the recurse number
 				rays[ray_index].First = dir - 2.0f * Vector3.Dot(dir, hit.normal) * hit.normal;
 				rays[ray_index].Second = point;
 				// draw a debug line to show that reflect has worked
-				ray = new Ray(hit.point, rays[ray_index].First);
-				Debug.DrawRay(point, rays[ray_index].First, Color.green, 6.0f);
+				Debug.DrawRay(point, hit.normal, Color.green, 6.0f);
 				recurse = false;
 			}
 			else if (hit.collider.CompareTag("Empty")){

@@ -27,18 +27,25 @@ public class RecursiveRaycaster : MonoBehaviour
 		init ();
 		slider_rays.onValueChanged.AddListener (delegate {rayValueChange ();});
 		slider_recursions.onValueChanged.AddListener (delegate {recursionValueChange ();});
+		rayValueChange();
+		recursionValueChange();
 	}
 
 	public void rayValueChange ()
 	{
-		num_rays = (int)slider_rays.value;
+		num_rays = (int) Mathf.Pow(2, slider_rays.value);;
 		slider_rays.GetComponentInChildren<Text> ().text = "Rays: " + num_rays;
+		init ();
 	}
 
 	public void recursionValueChange ()
 	{
-		num_rays = (int)slider_recursions.value;
-		slider_recursions.GetComponentInChildren<Text> ().text = "Recursions: " + num_rays;
+		if (current_recursion > (int) slider_recursions.value * 2){
+			init ();
+		}
+		num_recursions = (int)slider_recursions.value * 2;
+		slider_recursions.GetComponentInChildren<Text> ().text = "Recursions: " + num_recursions;
+
 	}
 
 	// init the recusion system.
@@ -120,10 +127,5 @@ public class RecursiveRaycaster : MonoBehaviour
 		Debug.LogError ("Single Ray cast control flow error");
 		return false;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
 
-	}
 }

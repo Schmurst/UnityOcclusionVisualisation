@@ -20,4 +20,12 @@ public class SoundOcclusionElement : MonoBehaviour {
 		mat.color = colour;
 		this.GetComponent<Renderer>().material = mat;
 	}
+
+	public void reset(){
+		hit = false;
+		this.gameObject.layer = 0;
+		Material mat = new Material(Shader.Find("Diffuse"));
+		mat.color = Color.white;
+		this.GetComponent<Renderer>().material = mat;
+	}
 }

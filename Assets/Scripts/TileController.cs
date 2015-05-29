@@ -28,6 +28,13 @@ public class TileController : MonoBehaviour {
 		Generatelevel();
 	}
 
+	public void ClearLevel(){
+		FindObjectOfType<RecursiveRaycaster>().init();
+		for (int i = 0; i < Tiles.Count; i++) {
+			Tiles[i].GetComponent<SoundOcclusionElement>().reset();
+		}
+	}
+
 
 	// generate random level
 	private void Generatelevel(){

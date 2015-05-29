@@ -35,6 +35,8 @@ public class FlyingCameraController : MonoBehaviour
 	{
 		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.visible = false;
+		this.transform.position = new Vector3(1.0f, 15.0f, -15.0f);
+		this.transform.rotation = Quaternion.Euler(45.0f, 0.0f, 0.0f);
 	}
 
 	private void UpdateCamera(){

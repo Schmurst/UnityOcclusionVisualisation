@@ -36,7 +36,6 @@ public class RecursiveRaycaster : MonoBehaviour {
 			rays.Add(temp_ray);
 			// rotate the dir for the next ray
 			dir = Quaternion.Euler(0.0f, angle, 0.0f) * dir;
-			Debug.Log (dir);
 		}
 	}
 	
@@ -85,7 +84,6 @@ public class RecursiveRaycaster : MonoBehaviour {
 				// If the object is empty fire another ray in the same direction and turn the 
 				// layer off to avoid raycast hits
 				float colour_fraction = (float) recursion / (float) num_recursions;
-				Debug.Log (colour_fraction);
 				Color temp = Color.Lerp (start_colour, end_colour,  colour_fraction);
 				hit.collider.gameObject.GetComponent<SoundOcclusionElement>().isHit(temp);
 			}

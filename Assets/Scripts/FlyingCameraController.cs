@@ -29,14 +29,15 @@ public class FlyingCameraController : MonoBehaviour
 	
 	private float rotationX = 0.0f;
 	private float rotationY = 0.0f;
+	private bool  flyMode   = true;
 	
 	void Start ()
 	{
-		//Screen.lockCursor = true;
+		Cursor.lockState = CursorLockMode.Confined;
+		Cursor.visible = false;
 	}
-	
-	void Update ()
-	{
+
+	private void UpdateCamera(){
 		rotationX += Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
 		rotationY += Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime;
 		rotationY = Mathf.Clamp (rotationY, -90, 90);
@@ -63,10 +64,26 @@ public class FlyingCameraController : MonoBehaviour
 		
 		if (Input.GetKey (KeyCode.Q)) {transform.position += transform.up * climbSpeed * Time.deltaTime;}
 		if (Input.GetKey (KeyCode.E)) {transform.position -= transform.up * climbSpeed * Time.deltaTime;}
-		
-		if (Input.GetKeyDown (KeyCode.End))
-		{
-			//Cursor.lockState = (Cursor.lockState == false) ? true : false;
+	}
+	
+	void Update ()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape)){
+			flyMode = !flyMode;
+			Debug.Log ("flyMode: " + flyMode);
+
+			if(flyMode){
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			}
+			else{
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+			}
+		}
+
+		if (flyMode){
+			UpdateCamera();
 		}
 	}
 }

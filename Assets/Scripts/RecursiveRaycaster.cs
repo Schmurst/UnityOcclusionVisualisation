@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using AssemblyCSharp;
+using UnityEngine.UI;
 
 public class RecursiveRaycaster : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class RecursiveRaycaster : MonoBehaviour
 	// will spawn a reflected ray.
 
 	public int num_rays = 16;			// to be equally dispersed radially
+	public Slider slider_rays;			// user control of the number rays
 	public int num_recursions = 10;		// number of bounces
+	public Slider slider_recursions;	// user controls of the number of recusions
 	public float line_display_time = 10.0f; // in seconds
 
 	public Color start_colour;
@@ -22,6 +25,20 @@ public class RecursiveRaycaster : MonoBehaviour
 	void Start ()
 	{
 		init ();
+		slider_rays.onValueChanged.AddListener (delegate {rayValueChange ();});
+		slider_recursions.onValueChanged.AddListener (delegate {recursionValueChange ();});
+	}
+
+	public void rayValueChange ()
+	{
+		num_rays = (int)slider_rays.value;
+		slider_rays.GetComponentInChildren<Text> ().text = "Rays: " + num_rays;
+	}
+
+	public void recursionValueChange ()
+	{
+		num_rays = (int)slider_recursions.value;
+		slider_recursions.GetComponentInChildren<Text> ().text = "Recursions: " + num_rays;
 	}
 
 	// init the recusion system.

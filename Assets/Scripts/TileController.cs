@@ -37,7 +37,7 @@ public class TileController : MonoBehaviour {
 		// layout the tilse
 		for (int j = - grid_size; j < grid_size; j++) {
 			for (int i = -grid_size; i < grid_size; i++) {
-				if (Random.value < 0.9f){
+				if (Random.value < 0.9f || (i == grid_size * 0.5f && j == grid_size * 0.5f)){
 					tile = GameObject.Instantiate<GameObject>(Empty_tile);
 				}
 				else{

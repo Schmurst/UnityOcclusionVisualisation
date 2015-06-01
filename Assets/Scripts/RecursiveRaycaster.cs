@@ -10,11 +10,12 @@ public class RecursiveRaycaster : MonoBehaviour
 	// up to a specified number if times, each time a ray hits a solid object it 
 	// will spawn a reflected ray.
 
-	public int num_rays = 16;			// to be equally dispersed radially
+	public int num_rays = 2;			// to be equally dispersed radially
 	public Slider slider_rays;			// user control of the number rays
-	public int num_recursions = 10;		// number of bounces
+	public int num_recursions = 1;		// number of bounces
 	public Slider slider_recursions;	// user controls of the number of recusions
 	public float line_display_time = 10.0f; // in seconds
+	public Slider slider_grid_size;
 
 	public Color start_colour;
 	public Color end_colour;
@@ -27,8 +28,11 @@ public class RecursiveRaycaster : MonoBehaviour
 		init ();
 		slider_rays.onValueChanged.AddListener (delegate {rayValueChange ();});
 		slider_recursions.onValueChanged.AddListener (delegate {recursionValueChange ();});
+		slider_grid_size.onValueChanged.AddListener(delegate {levelSizeChange ();});
+
 		rayValueChange();
 		recursionValueChange();
+		levelSizeChange();
 	}
 
 	public void rayValueChange ()
@@ -46,6 +50,13 @@ public class RecursiveRaycaster : MonoBehaviour
 		num_recursions = (int)slider_recursions.value * 2;
 		slider_recursions.GetComponentInChildren<Text> ().text = "Recursions: " + num_recursions;
 
+	}
+
+	public void levelSizeChange (){
+
+		FindObjectOfType<TileController>().setGridSize((int) slider_grid_size.value);
+		slider_grid_size.GetComponentInChildren<Text>().text = "Grid Size: " + slider_grid_size.value;
+		init ();
 	}
 
 	// init the recusion system.

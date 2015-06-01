@@ -36,6 +36,10 @@ public class TileController : MonoBehaviour {
 	}
 
 
+	public void setGridSize(int gridSize){
+		grid_size = gridSize;
+	}
+
 	// generate random level
 	private void Generatelevel(){
 		GameObject tile;
